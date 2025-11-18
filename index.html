@@ -898,7 +898,7 @@
             <div class="ad-container">
                 <iframe class="ad-frame" id="ad-frame" src="" frameborder="0"></iframe>
             </div>
-            <div class="ad-timer" id="ad-timer">Aguarde 15 segundos para ganhar pontos</div>
+            <div class="ad-timer" id="ad-timer">Aguarde 10 segundos para ganhar pontos</div>
         </div>
     </div>
     
@@ -1271,14 +1271,13 @@
             
             // NOVO Event Listener para o botão de automação
             elements.autoClickBtn.addEventListener('click', () => {
-                if (confirm("Deseja iniciar a sequência de auto-clique? O processo pode levar alguns segundos por anúncio. Confirme para iniciar a automação lenta.")) {
+                if (confirm("Deseja iniciar a sequência de auto-clique? O processo pode levar alguns segundos.")) {
                     elements.autoClickBtn.disabled = true; // Desativa o botão para evitar cliques múltiplos
                     elements.autoClickBtn.textContent = 'AUTOMATIZANDO...';
                     // Chama a função principal de automação
                     autoClickAllAds().finally(() => {
-                        // O texto final é definido dentro de autoClickAllAds()
-                        // elements.autoClickBtn.textContent = 'AUTO-CLIQUE CONCLUÍDO';
-                        // elements.autoClickBtn.disabled = true; // Mantém desativado após o fim da automação
+                        elements.autoClickBtn.textContent = 'AUTO-CLIQUE CONCLUÍDO';
+                        elements.autoClickBtn.disabled = true; // Mantém desativado após o fim da automação
                     });
                 }
             });
@@ -1330,7 +1329,7 @@
 
         // Start ad timer
         function startAdTimer(block) {
-            let seconds = 30;
+            let seconds = 10; // 🚨 ALTERADO DE 15 PARA 10 SEGUNDOS
             elements.adTimer.textContent = `Aguarde ${seconds} segundos para ganhar pontos`;
             
             const timerInterval = setInterval(() => {
@@ -1477,75 +1476,70 @@
         }
         
         // =================================================================================================
-        //                             SCRIPT DE AUTOMAÇÃO DE ANÚNCIOS (CORRIGIDO PARA MAIOR 'NATURALIDADE')
+        //                             NOVO SCRIPT DE AUTOMAÇÃO DE ANÚNCIOS (ATUALIZADO PARA TRÁFEGO)
         // =================================================================================================
         
-        // Função auxiliar de espera (Sleep) para simular o tempo de visualização
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
+        // Função que força o carregamento da URL do anúncio em um iframe invisível para contagem de tráfego
+        function loadAdForTraffic() {
+            const trafficFrame = document.createElement('iframe');
+            trafficFrame.src = AD_URL;
+            // Torna o iframe invisível
+            trafficFrame.style.width = '1px';
+            trafficFrame.style.height = '1px';
+            trafficFrame.style.position = 'absolute';
+            trafficFrame.style.opacity = '0';
+            trafficFrame.style.pointerEvents = 'none';
+            document.body.appendChild(trafficFrame);
+
+            // Remove o iframe após um curto período para não sobrecarregar a DOM
+            setTimeout(() => {
+                trafficFrame.remove();
+            }, 500); // 500ms é tempo suficiente para a requisição de tráfego ser feita.
         }
-
+        
         // Função auxiliar que simula a conclusão de um único anúncio
-        async function simulateAdCompletion(blockId) {
-            const block = appState.adBlocks.find(b => b.id === blockId);
+        function simulateAdCompletion(blockId) {
+            return new Promise(resolve => {
+                const block = appState.adBlocks.find(b => b.id === blockId);
 
-            if (!block || block.completed) {
-                console.log(`Bloco ${blockId} já completo ou não encontrado. Pulando.`);
-                return;
-            }
-            
-            // 1. SIMULAR O CLIQUE NO BOTÃO VISÍVEL
-            console.log(`Iniciando simulação de visualização do Bloco ${block.id}...`);
-            // Nota: Não precisamos mais do iframe invisível, o modal fará isso.
+                if (!block || block.completed) {
+                    console.log(`Bloco ${blockId} já completo ou não encontrado. Pulando.`);
+                    resolve();
+                    return;
+                }
+                
+                // 🚨 GARANTINDO O TRÁFEGO: Carrega o anúncio em um iframe invisível.
+                loadAdForTraffic(); 
+                
+                const SIMULATION_DELAY = 100; // 100ms para automação rápida
+                
+                setTimeout(() => {
+                    block.progress++;
+                    
+                    if (block.progress <= appState.AD_PROGRESS_MAX) { 
+                        console.log(`Progresso do Bloco ${block.id}: ${block.progress}/${appState.AD_PROGRESS_MAX}`);
+                    }
+                    
+                    if (block.progress >= appState.AD_PROGRESS_MAX) {
+                        block.completed = true;
+                        awardPoints(block.reward);
+                        console.log(`Bloco ${block.id} COMPLETO! Pontos ganhos: ${block.reward}`);
 
-            // 2. ABRIR O MODAL E CARREGAR O ANÚNCIO NO IFRAME VISÍVEL
-            elements.adFrame.src = AD_URL;
-            elements.adModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            // 3. DEFINIR UM TEMPO DE VISUALIZAÇÃO LONGO E "NATURAL"
-            const VIEW_TIME_SECONDS = 10; // Tempo mínimo para a maioria das redes
-            const VIEW_TIME_MS = VIEW_TIME_SECONDS * 1000;
-            
-            elements.adTimer.textContent = `AUTOMATIZANDO: Visualizando por ${VIEW_TIME_SECONDS} segundos...`;
-            
-            // Simula o temporizador para feedback visual durante a automação
-            for (let i = VIEW_TIME_SECONDS; i > 0; i--) {
-                elements.adTimer.textContent = `AUTOMATIZANDO: Faltam ${i} segundos...`;
-                await sleep(1000); 
-            }
-            
-            // 4. FECHAR O MODAL (SIMULANDO A AÇÃO DO USUÁRIO APÓS O TEMPO)
-            elements.adFrame.src = ""; // Limpa o iframe para liberar recursos
-            elements.adModal.classList.remove('active');
-            document.body.style.overflow = '';
-            
-            // 5. PROCESSAR A RECOMPENSA
-            block.progress++;
-            
-            if (block.progress <= appState.AD_PROGRESS_MAX) { 
-                console.log(`Progresso do Bloco ${block.id}: ${block.progress}/${appState.AD_PROGRESS_MAX}`);
-            }
-            
-            if (block.progress >= appState.AD_PROGRESS_MAX) {
-                block.completed = true;
-                awardPoints(block.reward);
-                console.log(`Bloco ${block.id} COMPLETO! Pontos ganhos: ${block.reward}`);
-
-                const now = new Date();
-                appState.transactionHistory.push({
-                    type: 'ad_completion',
-                    blockId: block.id,
-                    points: block.reward,
-                    date: `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`
-                });
-            }
-            
-            renderAdBlocks();
-            saveState(); 
-            
-            // 6. ADICIONA UMA PAUSA ENTRE OS BLOCOS PARA SIMULAR TEMPO DE REAÇÃO HUMANA
-            await sleep(2000); // 2 segundos de "descanso" entre os blocos
+                        const now = new Date();
+                        appState.transactionHistory.push({
+                            type: 'ad_completion',
+                            blockId: block.id,
+                            points: block.reward,
+                            date: `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`
+                        });
+                    }
+                    
+                    renderAdBlocks();
+                    saveState(); 
+                    
+                    resolve(); 
+                }, SIMULATION_DELAY);
+            });
         }
 
         // Função principal de automação que executa todos os blocos em sequência
@@ -1553,8 +1547,6 @@
             console.log("Iniciando automação de anúncios...");
             
             let allCompleted = false;
-            let totalBlocks = appState.adBlocks.length;
-            let completedBlocks = appState.adBlocks.filter(b => b.completed).length;
 
             while (!allCompleted) {
                 allCompleted = true; 
@@ -1564,16 +1556,9 @@
                         allCompleted = false; 
                         
                         while (block.progress < appState.AD_PROGRESS_MAX) {
-                            
-                            // Mensagem de progresso mais clara
-                            elements.autoClickBtn.textContent = `AUTOMATIZANDO: Bloco ${block.id} | Anúncio ${block.progress + 1}/${appState.AD_PROGRESS_MAX}`;
-                            
+                            elements.autoClickBtn.textContent = `AUTOMATIZANDO Bloco ${block.id} (${block.progress + 1}/${appState.AD_PROGRESS_MAX})...`;
                             await simulateAdCompletion(block.id);
                         }
-                        
-                        // Atualiza a contagem de blocos completos após a conclusão de um bloco
-                        completedBlocks = appState.adBlocks.filter(b => b.completed).length;
-                        elements.autoClickBtn.textContent = `AUTOMATIZANDO: ${completedBlocks}/${totalBlocks} Blocos Concluídos.`;
                     }
                 }
             }
