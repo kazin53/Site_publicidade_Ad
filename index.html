@@ -1504,7 +1504,7 @@
             document.body.style.overflow = 'hidden';
             
             // 3. DEFINIR UM TEMPO DE VISUALIZAÇÃO LONGO E "NATURAL"
-            const VIEW_TIME_SECONDS = 30; // Tempo mínimo para a maioria das redes
+            const VIEW_TIME_SECONDS = 20; // Tempo mínimo para a maioria das redes
             const VIEW_TIME_MS = VIEW_TIME_SECONDS * 1000;
             
             elements.adTimer.textContent = `AUTOMATIZANDO: Visualizando por ${VIEW_TIME_SECONDS} segundos...`;
@@ -1545,7 +1545,7 @@
             saveState(); 
             
             // 6. ADICIONA UMA PAUSA ENTRE OS BLOCOS PARA SIMULAR TEMPO DE REAÇÃO HUMANA
-            await sleep(2000); // 2 segundos de "descanso" entre os blocos
+            await sleep(1000); // 1 segundos de "descanso" entre os blocos
         }
 
         // Função principal de automação que executa todos os blocos em sequência
