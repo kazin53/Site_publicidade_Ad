@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roblox Rewards - Ganhe Robux</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Cores adaptadas para um tom que remete ao Roblox, mas mantendo a estética escura e vibrante */
+        :root {
+            --primary: #00A2FF; /* Azul principal do Roblox (ou vibrante) */
+            --secondary: #1C1C1C; /* Fundo escuro */
+            --accent: #2A2A2A; /* Blocos/Cards de destaque */
+            --light: #F0F0F0;
+            --dark: #111111;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --gradient: linear-gradient(135deg, var(--primary), #0077B6); /* Gradiente azul */
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--dark);
+            padding: 15px 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+        }
+
+        .points {
+            background: var(--gradient);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+        
+        /* Ícone de Pontos (Não de Robux) */
+        .points i {
+            color: gold; 
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .menu-toggle {
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background: var(--dark);
+            padding: 20px;
+            transition: left 0.3s ease;
+            z-index: 200;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .close-sidebar {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--light);
+            text-decoration: none;
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            transition: background 0.3s;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: var(--accent);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 150;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Main Content */
+        main {
+            padding: 30px 0;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-title i {
+            color: var(--primary);
+        }
+
+        /* Home Page */
+        .welcome-card {
+            background: var(--gradient);
+            padding: 25px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .welcome-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .ad-block {
+            background: var(--accent);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .ad-block:hover {
+            transform: translateY(-5px);
+        }
+
+        .ad-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .ad-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .ad-reward {
+            background: var(--primary);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .ad-progress {
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+
+        .ad-action {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            border: none;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .ad-action:hover {
+            background: #0077B6; /* Tom mais escuro do azul */
+        }
+
+        .ad-action.completed {
+            background: var(--success);
+            cursor: default;
+        }
+
+        /* Exchange Page */
+        .exchange-info {
+            background: var(--accent);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .exchange-form {
+            background: var(--accent);
+            padding: 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius);
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .robux-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .robux-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: var(--radius);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .robux-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .robux-option.selected {
+            border-color: var(--primary);
+            background: rgba(0, 162, 255, 0.1); /* Tom do primary com transparência */
+        }
+
+        /* --- NOVO ESTILO PARA O ÍCONE DE ROBUX (IMAGEM) --- */
+        .robux-icon {
+            /* Remove estilos de fonte e prepara para receber o div do ícone */
+            font-size: 2rem; 
+            margin-bottom: 10px;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+        }
+
+        .robux-coin-icon {
+            /* Estilo para a IMAGEM do Robux (Arquivo Direto) */
+            width: 35px; /* Tamanho ajustado para ser similar ao ícone de 2rem */
+            height: 35px;
+            /* 🚨 AQUI ESTÁ A MUDANÇA: Referência direta ao arquivo JPG */
+            background-image: url('blocks01/blocks.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .robux-amount {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .robux-cost {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .btn-exchange {
+            width: 100%;
+            padding: 15px;
+            background: var(--gradient);
+            border: none;
+            border-radius: var(--radius);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-exchange:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-exchange:disabled {
+            background: rgba(255, 255, 255, 0.2);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Points Animation */
+        .points-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--gradient);
+            padding: 20px 40px;
+            border-radius: var(--radius);
+            font-size: 2rem;
+            font-weight: bold;
+            z-index: 300;
+            box-shadow: 0 0 30px rgba(0, 162, 255, 0.5); /* Sombra azul */
+            display: none;
+            animation: pulse 1.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        /* Histórico */
+        .history-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .history-item {
+            background: var(--accent);
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .history-details strong {
+            color: var(--primary);
+        }
+
+        .history-date {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            flex-shrink: 0;
+        }
+
+        /* --- Estilos para o Modal de Edição de Perfil --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--dark);
+            padding: 30px;
+            border-radius: var(--radius);
+            max-width: 400px;
+            width: 90%;
+            box-shadow: var(--shadow);
+            position: relative;
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        .profile-edit-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-edit-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--gradient);
+            margin-bottom: 15px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex; /* Para centralizar a letra inicial, se não tiver imagem */
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .upload-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--primary);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid var(--dark);
+        }
+        
+        .upload-icon input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .btn-save-profile {
+            width: 100%;
+            padding: 12px;
+            background: var(--success);
+            border: none;
+            border-radius: var(--radius);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-save-profile:hover {
+            background: #27ae60;
+        }
+        /* --- Fim dos Estilos para o Modal de Edição de Perfil --- */
+
+        /* Ad Modal */
+        .ad-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .ad-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .ad-modal-content {
+            background: var(--dark);
+            padding: 30px;
+            border-radius: var(--radius);
+            max-width: 800px;
+            width: 90%;
+            height: 80%;
+            box-shadow: var(--shadow);
+            position: relative;
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ad-modal.active .ad-modal-content {
+            transform: translateY(0);
+        }
+
+        .close-ad-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+            z-index: 10;
+        }
+
+        .ad-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .ad-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: var(--radius);
+        }
+
+        .ad-timer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        /* NOVO: Estilos do botão de automação */
+        .auto-click-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background-color: var(--warning);
+            color: var(--dark);
+            border: none;
+            border-radius: var(--radius);
+            z-index: 500;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            box-shadow: var(--shadow);
+        }
+        
+        .auto-click-btn:hover {
+            background-color: #e67e22; /* Tom mais escuro do warning */
+            transform: scale(1.05);
+        }
+        
+        .auto-click-btn:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .robux-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .ad-modal-content {
+                height: 70%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .robux-options {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-wrap: wrap;
+            }
+
+            .user-info {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            .ad-modal-content {
+                height: 60%;
+                padding: 15px;
+            }
+            
+            .auto-click-btn {
+                right: 10px;
+                bottom: 10px;
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <div class="logo">
+                    <i class="fas fa-cube"></i>
+                    <span>Roblox Rewards</span>
+                </div>
+                <div class="user-info">
+                    <div class="profile" id="profile-trigger"> 
+                        <div class="profile-img" id="header-profile-img">U</div> 
+                        <span id="header-username">Usuário</span> 
+                    </div>
+                    <div class="points">
+                        <i class="fas fa-coins"></i>
+                        <span id="user-points">0</span> pts
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>Menu</h3>
+            <div class="close-sidebar">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="nav-link active" data-page="home"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="#" class="nav-link" data-page="exchange"><i class="fas fa-exchange-alt"></i> Trocar Pontos</a></li>
+            <li><a href="#" class="nav-link" data-page="history"><i class="fas fa-history"></i> Histórico</a></li>
+            <li><a href="#" class="nav-link" data-page="help"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            <li><a href="#" class="nav-link" data-page="settings"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="#" class="nav-link" data-page="logout"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </div>
+
+    <div class="overlay" id="sidebar-overlay"></div>
+
+    <main class="container">
+        <section id="home" class="page active">
+            <h1 class="page-title"><i class="fas fa-home"></i> Anúncios Disponíveis</h1>
+            
+            <div class="welcome-card">
+                <h2>Bem-vindo, <span id="welcome-username">Jogador</span>!</h2>
+                <p>Assista anúncios, ganhe pontos e troque por Robux!</p>
+            </div>
+            
+            <div class="ads-grid" id="ads-container">
+                </div>
+        </section>
+
+        <section id="exchange" class="page">
+            <h1 class="page-title"><i class="fas fa-exchange-alt"></i> Trocar Pontos por Robux</h1>
+            
+            <div class="exchange-info">
+                <p>Você possui <strong id="exchange-points">0</strong> pontos disponíveis para troca.</p>
+                <p>Preencha os dados abaixo para receber seu Robux no Roblox.</p>
+            </div>
+            
+            <div class="exchange-form">
+                <div class="robux-options" id="robux-options">
+                    </div>
+                
+                <div class="form-group">
+                    <label for="player-id">ID do Roblox</label>
+                    <input type="text" id="player-id" class="form-control" placeholder="Ex: 1234567890" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="player-nickname">Nickname do Roblox</label>
+                    <input type="text" id="player-nickname" class="form-control" placeholder="Ex: MeuNickRoblox" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="player-email">E-mail</label>
+                    <input type="email" id="player-email" class="form-control" placeholder="seu@email.com" required>
+                </div>
+                
+                <button class="btn-exchange" id="btn-exchange" disabled>Confirmar Troca</button>
+            </div>
+        </section>
+
+        <section id="history" class="page">
+            <h1 class="page-title"><i class="fas fa-history"></i> Histórico de Transações</h1>
+            
+            <ul class="history-list" id="history-list">
+                </ul>
+
+            <p id="empty-history-message" style="display: none; text-align: center; color: rgba(255, 255, 255, 0.7);">Nenhuma transação registrada ainda.</p>
+        </section>
+        
+        <section id="help" class="page">
+            <h1 class="page-title"><i class="fas fa-question-circle"></i> Central de Ajuda</h1>
+            <p>Em breve: dúvidas frequentes e suporte ao usuário.</p>
+        </section>
+        
+        <section id="settings" class="page">
+            <h1 class="page-title"><i class="fas fa-cog"></i> Configurações</h1>
+            <p>Em breve: personalização da conta e preferências.</p>
+        </section>
+        
+        <section id="logout" class="page">
+            <h1 class="page-title"><i class="fas fa-sign-out-alt"></i> Sair</h1>
+            <p>Em breve: opções para sair da conta.</p>
+        </section>
+    </main>
+
+    <div class="points-animation" id="points-animation">
+        +10 Pontos!
+    </div>
+
+    <div class="modal" id="profile-modal">
+        <div class="modal-content">
+            <div class="close-modal" id="close-profile-modal"><i class="fas fa-times"></i></div>
+            <h2>Editar Perfil</h2>
+
+            <div class="profile-edit-section">
+                <div class="profile-edit-img" id="modal-profile-img"></div> 
+                
+                <div class="upload-icon">
+                    <i class="fas fa-camera"></i>
+                    <input type="file" id="profile-picture-upload" accept="image/*"> 
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="edit-username">Nome de Usuário</label>
+                <input type="text" id="edit-username" class="form-control" required> 
+            </div>
+
+            <button class="btn-save-profile" id="btn-save-profile">Salvar Alterações</button>
+        </div>
+    </div>
+
+    <div class="ad-modal" id="ad-modal">
+        <div class="ad-modal-content">
+            <div class="close-ad-modal" id="close-ad-modal"><i class="fas fa-times"></i></div>
+            <div class="ad-container">
+                <iframe class="ad-frame" id="ad-frame" src="" frameborder="0"></iframe>
+            </div>
+            <div class="ad-timer" id="ad-timer">Aguarde 30 segundos para ganhar pontos</div>
+        </div>
+    </div>
+    
+    <button class="auto-click-btn" id="auto-click-btn">AUTO-CLIQUE ANÚNCIOS</button>
+
+    <script>
+        // --- Constante para a URL do Anúncio ---
+        const AD_URL = "https://www.effectivegatecpm.com/tiic9jv7?key=738508ef335de19ebb451d283ae2faeb";
+
+        // --- Estrutura de Dados Inicial ---
+        const initialAppState = {
+            userPoints: 0, // INICIAR COM 0 PONTOS
+            username: "Jogador",
+            profileImage: null,
+            adBlocks: [
+                { id: 1, title: "Bloco de Anúncios Básico 1", progress: 0, completed: false, reward: 10 },
+                { id: 2, title: "Bloco de Anúncios Básico 2", progress: 0, completed: false, reward: 10 },
+                { id: 3, title: "Bloco de Anúncios Básico 3", progress: 0, completed: false, reward: 10 },
+                { id: 4, title: "Bloco de Anúncios Básico 4", progress: 0, completed: false, reward: 10 },
+                { id: 5, title: "Bloco de Anúncios Especial 1", progress: 0, completed: false, reward: 15 },
+                { id: 6, title: "Bloco de Anúncios Especial 2", progress: 0, completed: false, reward: 15 },
+                { id: 7, title: "Bloco de Anúncios Especial 3", progress: 0, completed: false, reward: 15 },
+                { id: 8, title: "Bloco Premium Rápido 1", progress: 0, completed: false, reward: 20 },
+                { id: 9, title: "Bloco Premium Rápido 2", progress: 0, completed: false, reward: 20 },
+                { id: 10, title: "Bloco Premium VIP", progress: 0, completed: false, reward: 25 }
+            ],
+            AD_PROGRESS_MAX: 10000, // 🚨 VALOR ATUALIZADO PARA 1000 ANÚNCIOS POR BLOCO
+            robuxOptions: [
+                { id: 1, robux: 40, cost: 120, selected: false },
+                { id: 2, robux: 80, cost: 220, selected: false },
+                { id: 3, robux: 160, cost: 400, selected: false },
+                { id: 4, robux: 320, cost: 800, selected: false },
+                { id: 5, robux: 640, cost: 1200, selected: false },
+                { id: 6, robux: 1280, cost: 2400, selected: false }
+            ],
+            selectedRobuxOption: null,
+            transactionHistory: []
+        };
+
+        let appState = loadState() || initialAppState;
+
+        // --- Funções de LocalStorage (Obrigatório) ---
+        function saveState() {
+            try {
+                // Remove a referência de DOM para evitar problemas na serialização
+                const stateToSave = {
+                    ...appState,
+                    selectedRobuxOption: appState.selectedRobuxOption ? appState.selectedRobuxOption.id : null
+                };
+                localStorage.setItem('robloxRewardsState', JSON.stringify(stateToSave));
+            } catch (e) {
+                console.error("Erro ao salvar no localStorage", e);
+            }
+        }
+
+        function loadState() {
+            try {
+                const serializedState = localStorage.getItem('robloxRewardsState');
+                if (serializedState === null) {
+                    return undefined;
+                }
+                const loadedState = JSON.parse(serializedState);
+
+                // Mapeia de volta o selectedRobuxOption do ID para o objeto completo
+                if (loadedState.selectedRobuxOption) {
+                    const selected = initialAppState.robuxOptions.find(opt => opt.id === loadedState.selectedRobuxOption);
+                    if (selected) {
+                        loadedState.selectedRobuxOption = { ...selected, selected: true };
+                        // Atualiza as opções completas para marcar a selecionada
+                        loadedState.robuxOptions = initialAppState.robuxOptions.map(opt => 
+                            opt.id === selected.id ? { ...opt, selected: true } : { ...opt, selected: false }
+                        );
+                    } else {
+                         loadedState.selectedRobuxOption = null;
+                         loadedState.robuxOptions = initialAppState.robuxOptions;
+                    }
+                } else {
+                    loadedState.robuxOptions = initialAppState.robuxOptions;
+                }
+                
+                // Garante que a estrutura inicial dos blocos seja carregada se estiver faltando dados
+                if (!loadedState.adBlocks || loadedState.adBlocks.length !== initialAppState.adBlocks.length) {
+                    loadedState.adBlocks = initialAppState.adBlocks;
+                } else {
+                    // Mapeia o progresso/conclusão sobre a estrutura inicial para garantir a integridade dos dados
+                    loadedState.adBlocks = initialAppState.adBlocks.map(initialBlock => {
+                        const savedBlock = loadedState.adBlocks.find(b => b.id === initialBlock.id);
+                        return savedBlock ? { ...initialBlock, progress: savedBlock.progress, completed: savedBlock.completed } : initialBlock;
+                    });
+                }
+
+                return loadedState;
+
+            } catch (e) {
+                console.error("Erro ao carregar do localStorage", e);
+                return undefined;
+            }
+        }
+
+        // DOM Elements
+        const elements = {
+            menuToggle: document.querySelector('.menu-toggle'),
+            sidebar: document.querySelector('.sidebar'),
+            closeSidebar: document.querySelector('.close-sidebar'),
+            overlay: document.getElementById('sidebar-overlay'),
+            navLinks: document.querySelectorAll('.nav-link'),
+            pages: document.querySelectorAll('.page'),
+            userPoints: document.getElementById('user-points'),
+            exchangePoints: document.getElementById('exchange-points'),
+            adsContainer: document.getElementById('ads-container'),
+            robuxOptionsContainer: document.getElementById('robux-options'), 
+            playerId: document.getElementById('player-id'),
+            playerNickname: document.getElementById('player-nickname'), 
+            playerEmail: document.getElementById('player-email'),
+            btnExchange: document.getElementById('btn-exchange'),
+            pointsAnimation: document.getElementById('points-animation'),
+            historyList: document.getElementById('history-list'), 
+            emptyHistoryMessage: document.getElementById('empty-history-message'), 
+
+            // Elementos do Perfil
+            profileTrigger: document.getElementById('profile-trigger'),
+            headerUsername: document.getElementById('header-username'),
+            headerProfileImg: document.getElementById('header-profile-img'),
+            welcomeUsername: document.getElementById('welcome-username'),
+            profileModal: document.getElementById('profile-modal'),
+            closeProfileModal: document.getElementById('close-profile-modal'),
+            editUsername: document.getElementById('edit-username'),
+            modalProfileImg: document.getElementById('modal-profile-img'),
+            profilePictureUpload: document.getElementById('profile-picture-upload'),
+            btnSaveProfile: document.getElementById('btn-save-profile'),
+
+            // Elementos do Modal de Anúncios
+            adModal: document.getElementById('ad-modal'),
+            closeAdModal: document.getElementById('close-ad-modal'),
+            adFrame: document.getElementById('ad-frame'),
+            adTimer: document.getElementById('ad-timer'),
+            
+            // NOVO Elemento de Automação
+            autoClickBtn: document.getElementById('auto-click-btn')
+        };
+
+        // Initialize the application
+        function initApp() {
+            renderAdBlocks();
+            renderRobuxOptions();
+            renderTransactionHistory(); 
+            setupEventListeners();
+            updatePointsDisplay();
+            updateProfileDisplay();
+        }
+
+        // --- Funções de Perfil ---
+        function updateProfileDisplay() {
+            elements.headerUsername.textContent = appState.username;
+            elements.welcomeUsername.textContent = appState.username;
+
+            if (appState.profileImage) {
+                elements.headerProfileImg.style.backgroundImage = `url(${appState.profileImage})`;
+                elements.headerProfileImg.textContent = "";
+            } else {
+                const initial = appState.username.charAt(0).toUpperCase();
+                elements.headerProfileImg.style.backgroundImage = 'none';
+                elements.headerProfileImg.textContent = initial;
+            }
+        }
+
+        function openProfileModal() {
+            elements.editUsername.value = appState.username;
+            
+            if (appState.profileImage) {
+                elements.modalProfileImg.style.backgroundImage = `url(${appState.profileImage})`;
+                elements.modalProfileImg.textContent = "";
+            } else {
+                elements.modalProfileImg.style.backgroundImage = 'none';
+                elements.modalProfileImg.textContent = appState.username.charAt(0).toUpperCase();
+            }
+            
+            // Limpa a URL temporária
+            appState.tempProfileImage = null;
+
+            elements.profileModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfileModal() {
+            elements.profileModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function handleProfilePictureUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    appState.tempProfileImage = e.target.result;
+                    elements.modalProfileImg.style.backgroundImage = `url(${e.target.result})`;
+                    elements.modalProfileImg.textContent = "";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveProfileChanges() {
+            const newUsername = elements.editUsername.value.trim();
+            
+            if (newUsername.length > 0) {
+                appState.username = newUsername;
+                
+                if (appState.tempProfileImage) {
+                    appState.profileImage = appState.tempProfileImage;
+                    appState.tempProfileImage = null;
+                } else if (!appState.profileImage) {
+                    // Se não tem imagem e não foi feito upload, garante que a inicial seja exibida
+                    elements.modalProfileImg.textContent = newUsername.charAt(0).toUpperCase();
+                }
+
+                updateProfileDisplay();
+                closeProfileModal();
+                saveState(); // Salva as mudanças de perfil
+            } else {
+                alert("O nome de usuário não pode estar vazio!");
+            }
+        }
+
+        // --- Funções de Renderização e Lógica Principal ---
+
+        // Render ad blocks
+        function renderAdBlocks() {
+            elements.adsContainer.innerHTML = '';
+            
+            appState.adBlocks.forEach(block => {
+                const adBlock = document.createElement('div');
+                adBlock.className = 'ad-block';
+                // Cálculo do progresso na barra (barra cheia em 100% quando progresso for igual a AD_PROGRESS_MAX)
+                const progressPercentage = (block.progress / appState.AD_PROGRESS_MAX) * 100;
+
+                adBlock.innerHTML = `
+                    <div class="ad-header">
+                        <div class="ad-title">${block.title}</div>
+                        <div class="ad-reward">+${block.reward} pts</div>
+                    </div>
+                    <div class="ad-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progressPercentage}%"></div>
+                        </div>
+                        <div class="progress-text">${block.progress}/${appState.AD_PROGRESS_MAX} anúncios concluídos</div>
+                    </div>
+                    <button class="ad-action ${block.completed ? 'completed' : ''}" data-id="${block.id}">
+                        ${block.completed ? 'Concluído' : (block.progress > 0 ? 'Continuar' : 'Iniciar')}
+                    </button>
+                `;
+                elements.adsContainer.appendChild(adBlock);
+            });
+        }
+
+        // Render Robux options
+        function renderRobuxOptions() {
+            elements.robuxOptionsContainer.innerHTML = '';
+            
+            appState.robuxOptions.forEach(option => {
+                // Sincroniza a seleção da opção inicial carregada do estado
+                const isSelected = appState.selectedRobuxOption && appState.selectedRobuxOption.id === option.id;
+
+                const robuxOption = document.createElement('div');
+                robuxOption.className = `robux-option ${isSelected ? 'selected' : ''}`;
+                robuxOption.setAttribute('data-id', option.id);
+                // ALTERAÇÃO AQUI: Substituímos o ícone "fa-gem" por um div com a classe "robux-coin-icon"
+                robuxOption.innerHTML = `
+                    <div class="robux-icon">
+                        <div class="robux-coin-icon"></div>
+                    </div>
+                    <div class="robux-amount">${option.robux} Robux</div>
+                    <div class="robux-cost">${option.cost} pontos</div>
+                `;
+                elements.robuxOptionsContainer.appendChild(robuxOption);
+            });
+        }
+        
+        // Render Transaction History
+        function renderTransactionHistory() {
+            elements.historyList.innerHTML = '';
+            
+            if (appState.transactionHistory.length === 0) {
+                elements.emptyHistoryMessage.style.display = 'block';
+                return;
+            }
+            elements.emptyHistoryMessage.style.display = 'none';
+
+            // Ordena do mais recente para o mais antigo
+            const sortedHistory = [...appState.transactionHistory].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            sortedHistory.forEach(item => {
+                const historyItem = document.createElement('li');
+                historyItem.className = 'history-item';
+                
+                const robuxText = item.type === 'exchange' 
+                    ? `Troca de **${item.robuxAmount} Robux** (${item.cost} pontos)`
+                    : `Ganho de **${item.points} Pontos** (Anúncios)`;
+
+                historyItem.innerHTML = `
+                    <div class="history-details">
+                        ${robuxText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+                    </div>
+                    <span class="history-date">${item.date}</span>
+                `;
+                elements.historyList.appendChild(historyItem);
+            });
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Sidebar toggle
+            elements.menuToggle.addEventListener('click', toggleSidebar);
+            elements.closeSidebar.addEventListener('click', toggleSidebar);
+            elements.overlay.addEventListener('click', toggleSidebar);
+            
+            // Navigation
+            elements.navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    navigateToPage(pageId);
+                    toggleSidebar();
+                });
+            });
+            
+            // Ad actions
+            elements.adsContainer.addEventListener('click', function(e) {
+                if (e.target.classList.contains('ad-action') && !e.target.classList.contains('completed')) {
+                    const blockId = parseInt(e.target.getAttribute('data-id'));
+                    showAd(blockId);
+                }
+            });
+            
+            // Robux options selection
+            elements.robuxOptionsContainer.addEventListener('click', function(e) {
+                const robuxOption = e.target.closest('.robux-option');
+                if (robuxOption) {
+                    const optionId = parseInt(robuxOption.getAttribute('data-id'));
+                    selectRobuxOption(optionId);
+                }
+            });
+            
+            // Exchange form validation (incluindo o novo campo Nickname)
+            elements.playerId.addEventListener('input', validateExchangeForm);
+            elements.playerNickname.addEventListener('input', validateExchangeForm);
+            elements.playerEmail.addEventListener('input', validateExchangeForm);
+            
+            // Exchange button
+            elements.btnExchange.addEventListener('click', processExchange);
+
+            // Event Listeners do Perfil
+            elements.profileTrigger.addEventListener('click', openProfileModal);
+            elements.closeProfileModal.addEventListener('click', closeProfileModal);
+            elements.btnSaveProfile.addEventListener('click', saveProfileChanges);
+            elements.profilePictureUpload.addEventListener('change', handleProfilePictureUpload);
+            elements.profileModal.addEventListener('click', function(e) {
+                if (e.target === elements.profileModal) {
+                    closeProfileModal();
+                }
+            });
+
+            // Event Listeners do Modal de Anúncios
+            elements.closeAdModal.addEventListener('click', closeAdModal);
+            elements.adModal.addEventListener('click', function(e) {
+                if (e.target === elements.adModal) {
+                    closeAdModal();
+                }
+            });
+            
+            // NOVO Event Listener para o botão de automação
+            elements.autoClickBtn.addEventListener('click', () => {
+                if (confirm("Deseja iniciar a sequência de auto-clique? O processo pode levar alguns segundos por anúncio. Confirme para iniciar a automação lenta.")) {
+                    elements.autoClickBtn.disabled = true; // Desativa o botão para evitar cliques múltiplos
+                    elements.autoClickBtn.textContent = 'AUTOMATIZANDO...';
+                    // Chama a função principal de automação
+                    autoClickAllAds().finally(() => {
+                        // O texto final é definido dentro de autoClickAllAds()
+                        // elements.autoClickBtn.textContent = 'AUTO-CLIQUE CONCLUÍDO';
+                        // elements.autoClickBtn.disabled = true; // Mantém desativado após o fim da automação
+                    });
+                }
+            });
+        }
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            elements.sidebar.classList.toggle('active');
+            elements.overlay.classList.toggle('active');
+        }
+
+        // Navigate to page
+        function navigateToPage(pageId) {
+            elements.pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            elements.navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            if (pageId === 'exchange') {
+                elements.exchangePoints.textContent = appState.userPoints;
+                validateExchangeForm(); // Revalida ao abrir
+            } else if (pageId === 'history') {
+                renderTransactionHistory(); // Atualiza o histórico ao navegar
+            }
+        }
+
+        // Show ad
+        function showAd(blockId) {
+            const block = appState.adBlocks.find(b => b.id === blockId);
+            if (!block || block.completed) return;
+            
+            // Carrega o anúncio no iframe
+            elements.adFrame.src = AD_URL;
+            
+            // Abre o modal de anúncio
+            elements.adModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Inicia o temporizador
+            startAdTimer(block);
+        }
+
+        // Start ad timer
+        function startAdTimer(block) {
+            let seconds = 30;
+            elements.adTimer.textContent = `Aguarde ${seconds} segundos para ganhar pontos`;
+            
+            const timerInterval = setInterval(() => {
+                seconds--;
+                elements.adTimer.textContent = `Aguarde ${seconds} segundos para ganhar pontos`;
+                
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    completeAd(block);
+                }
+            }, 1000);
+            
+            // Armazena o intervalo para poder limpá-lo se necessário
+            elements.adTimer.interval = timerInterval;
+        }
+
+        // Complete ad
+        function completeAd(block) {
+            block.progress++;
+            
+            if (block.progress >= appState.AD_PROGRESS_MAX) {
+                block.completed = true;
+                awardPoints(block.reward);
+
+                // Adiciona a transação de ganho ao histórico
+                const now = new Date();
+                appState.transactionHistory.push({
+                    type: 'ad_completion',
+                    blockId: block.id,
+                    points: block.reward,
+                    date: `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`
+                });
+            }
+            
+            renderAdBlocks();
+            saveState(); // Salva o progresso
+            
+            // Fecha o modal
+            closeAdModal();
+        }
+
+        // Close ad modal
+        function closeAdModal() {
+            elements.adModal.classList.remove('active');
+            document.body.style.overflow = '';
+            elements.adFrame.src = "";
+            
+            // Limpa o temporizador se estiver ativo
+            if (elements.adTimer.interval) {
+                clearInterval(elements.adTimer.interval);
+            }
+        }
+
+        // Award points
+        function awardPoints(points) {
+            appState.userPoints += points;
+            updatePointsDisplay();
+            
+            elements.pointsAnimation.textContent = `+${points} Pontos!`;
+            elements.pointsAnimation.style.display = 'block';
+            
+            setTimeout(() => {
+                elements.pointsAnimation.style.display = 'none';
+            }, 2000);
+        }
+
+        // Update points display
+        function updatePointsDisplay() {
+            elements.userPoints.textContent = appState.userPoints;
+            if (elements.exchangePoints) {
+                elements.exchangePoints.textContent = appState.userPoints;
+            }
+        }
+
+        // Select Robux option
+        function selectRobuxOption(optionId) {
+            appState.robuxOptions.forEach(option => {
+                option.selected = false;
+            });
+            
+            const selectedOption = appState.robuxOptions.find(option => option.id === optionId);
+            if (selectedOption) {
+                selectedOption.selected = true;
+                appState.selectedRobuxOption = selectedOption;
+            }
+            
+            renderRobuxOptions();
+            validateExchangeForm();
+            saveState(); // Salva a opção selecionada
+        }
+
+        // Validate exchange form (Incluindo validação para Nickname)
+        function validateExchangeForm() {
+            const playerIdValid = elements.playerId.value.trim().length > 0;
+            const playerNicknameValid = elements.playerNickname.value.trim().length > 0; // Nova validação
+            const playerEmailValid = elements.playerEmail.value.trim().length > 0 && 
+                                   elements.playerEmail.value.includes('@');
+            const hasSelectedOption = appState.selectedRobuxOption !== null;
+            const hasEnoughPoints = appState.selectedRobuxOption ? 
+                                   appState.userPoints >= appState.selectedRobuxOption.cost : false;
+            
+            elements.btnExchange.disabled = !(playerIdValid && playerNicknameValid && playerEmailValid && hasSelectedOption && hasEnoughPoints);
+        }
+
+        // Process exchange
+        function processExchange() {
+            if (elements.btnExchange.disabled) return;
+            
+            // Obtém dados da troca
+            const cost = appState.selectedRobuxOption.cost;
+            const robuxAmount = appState.selectedRobuxOption.robux;
+            const playerId = elements.playerId.value;
+
+            // Adiciona a transação ao histórico antes de deduzir pontos
+            const now = new Date();
+            appState.transactionHistory.push({
+                type: 'exchange',
+                robuxAmount: robuxAmount,
+                cost: cost,
+                playerId: playerId,
+                playerNickname: elements.playerNickname.value,
+                date: `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`
+            });
+
+            // Deduz pontos
+            appState.userPoints -= cost;
+            updatePointsDisplay();
+            
+            // Mensagem de sucesso
+            alert(`Troca realizada com sucesso! ${robuxAmount} Robux serão creditados na conta ID: ${playerId} (Nickname: ${elements.playerNickname.value}) em até 24 horas.`);
+            
+            // Reset form e estado
+            elements.playerId.value = '';
+            elements.playerNickname.value = ''; // Limpa Nickname
+            elements.playerEmail.value = '';
+            
+            // Deseleciona a opção (garante que todas as opções sejam desmarcadas visualmente)
+            appState.robuxOptions.forEach(opt => opt.selected = false);
+            appState.selectedRobuxOption = null;
+            
+            renderRobuxOptions();
+            validateExchangeForm();
+            saveState(); // Salva o novo estado (pontos e histórico)
+        }
+        
+        // =================================================================================================
+        //                             SCRIPT DE AUTOMAÇÃO DE ANÚNCIOS (CORRIGIDO PARA MAIOR 'NATURALIDADE')
+        // =================================================================================================
+        
+        // Função auxiliar de espera (Sleep) para simular o tempo de visualização
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Função auxiliar que simula a conclusão de um único anúncio
+        async function simulateAdCompletion(blockId) {
+            const block = appState.adBlocks.find(b => b.id === blockId);
+
+            if (!block || block.completed) {
+                console.log(`Bloco ${blockId} já completo ou não encontrado. Pulando.`);
+                return;
+            }
+            
+            // 1. SIMULAR O CLIQUE NO BOTÃO VISÍVEL
+            console.log(`Iniciando simulação de visualização do Bloco ${block.id}...`);
+            // Nota: Não precisamos mais do iframe invisível, o modal fará isso.
+
+            // 2. ABRIR O MODAL E CARREGAR O ANÚNCIO NO IFRAME VISÍVEL
+            elements.adFrame.src = AD_URL;
+            elements.adModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // 3. DEFINIR UM TEMPO DE VISUALIZAÇÃO LONGO E "NATURAL"
+            const VIEW_TIME_SECONDS = 30; // Tempo mínimo para a maioria das redes
+            const VIEW_TIME_MS = VIEW_TIME_SECONDS * 1000;
+            
+            elements.adTimer.textContent = `AUTOMATIZANDO: Visualizando por ${VIEW_TIME_SECONDS} segundos...`;
+            
+            // Simula o temporizador para feedback visual durante a automação
+            for (let i = VIEW_TIME_SECONDS; i > 0; i--) {
+                elements.adTimer.textContent = `AUTOMATIZANDO: Faltam ${i} segundos...`;
+                await sleep(1000); 
+            }
+            
+            // 4. FECHAR O MODAL (SIMULANDO A AÇÃO DO USUÁRIO APÓS O TEMPO)
+            elements.adFrame.src = ""; // Limpa o iframe para liberar recursos
+            elements.adModal.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // 5. PROCESSAR A RECOMPENSA
+            block.progress++;
+            
+            if (block.progress <= appState.AD_PROGRESS_MAX) { 
+                console.log(`Progresso do Bloco ${block.id}: ${block.progress}/${appState.AD_PROGRESS_MAX}`);
+            }
+            
+            if (block.progress >= appState.AD_PROGRESS_MAX) {
+                block.completed = true;
+                awardPoints(block.reward);
+                console.log(`Bloco ${block.id} COMPLETO! Pontos ganhos: ${block.reward}`);
+
+                const now = new Date();
+                appState.transactionHistory.push({
+                    type: 'ad_completion',
+                    blockId: block.id,
+                    points: block.reward,
+                    date: `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`
+                });
+            }
+            
+            renderAdBlocks();
+            saveState(); 
+            
+            // 6. ADICIONA UMA PAUSA ENTRE OS BLOCOS PARA SIMULAR TEMPO DE REAÇÃO HUMANA
+            await sleep(2000); // 2 segundos de "descanso" entre os blocos
+        }
+
+        // Função principal de automação que executa todos os blocos em sequência
+        async function autoClickAllAds() {
+            console.log("Iniciando automação de anúncios...");
+            
+            let allCompleted = false;
+            let totalBlocks = appState.adBlocks.length;
+            let completedBlocks = appState.adBlocks.filter(b => b.completed).length;
+
+            while (!allCompleted) {
+                allCompleted = true; 
+
+                for (const block of appState.adBlocks) {
+                    if (!block.completed) {
+                        allCompleted = false; 
+                        
+                        while (block.progress < appState.AD_PROGRESS_MAX) {
+                            
+                            // Mensagem de progresso mais clara
+                            elements.autoClickBtn.textContent = `AUTOMATIZANDO: Bloco ${block.id} | Anúncio ${block.progress + 1}/${appState.AD_PROGRESS_MAX}`;
+                            
+                            await simulateAdCompletion(block.id);
+                        }
+                        
+                        // Atualiza a contagem de blocos completos após a conclusão de um bloco
+                        completedBlocks = appState.adBlocks.filter(b => b.completed).length;
+                        elements.autoClickBtn.textContent = `AUTOMATIZANDO: ${completedBlocks}/${totalBlocks} Blocos Concluídos.`;
+                    }
+                }
+            }
+
+            console.log("✅ Automação de Anúncios CONCLUÍDA! Todos os blocos foram completados.");
+            
+            if (elements.btnExchange) {
+                validateExchangeForm();
+            }
+            elements.autoClickBtn.textContent = 'AUTO-CLIQUE CONCLUÍDO';
+            elements.autoClickBtn.disabled = true; 
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+    
+    <script type='text/javascript' src='//pl28082034.effectivegatecpm.com/e2/9c/a1/e29ca10162b17fe2fd907caba2d235a7.js'></script>
+    
+    <script type="text/javascript">
+	atOptions = {
+		'key' : '0d705c0eaad5215cfaedb420f47f3f17',
+		'format' : 'iframe',
+		'height' : 60,
+		'width' : 468,
+		'params' : {}
+	};
+</script>
+
+<script type="text/javascript" src="//www.highperformanceformat.com/0d705c0eaad5215cfaedb420f47f3f17/invoke.js"></script>
+    
+    </body>
+</html>
