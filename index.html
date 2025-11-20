@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roblox Rewards - Ganhe Robux</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00A2FF">
     <style>
         /* Cores adaptadas para um tom que remete ao Roblox, mas mantendo a estética escura e vibrante */
         :root {
@@ -1589,6 +1591,14 @@
 
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("service-worker.js")
+                .then(() => console.log("Service Worker registrado com sucesso"))
+                .catch(err => console.log("Erro ao registrar Service Worker:", err));
+        }
     </script>
 
     // Anúncio banner1
