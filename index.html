@@ -236,6 +236,24 @@
             font-size: 1.8rem;
             margin-bottom: 10px;
         }
+        
+        /* NOVO: Estilo para o Banner de Anúncio */
+        .banner-ad {
+            margin: 20px 0; /* Espaçamento em torno do banner */
+            text-align: center;
+            background: var(--accent);
+            padding: 10px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        
+        /* Garante que o contêiner do anúncio preencha a largura */
+        .banner-ad > div {
+            margin: 0 auto;
+            max-width: 728px; /* Largura máxima comum para banners */
+        }
+        /* FIM NOVO: Estilo para o Banner de Anúncio */
+
 
         .ads-grid {
             display: grid;
@@ -722,6 +740,10 @@
             .ad-modal-content {
                 height: 70%;
             }
+            
+            .banner-ad > div {
+                max-width: 468px; /* Ajuste para dispositivos menores */
+            }
         }
 
         @media (max-width: 480px) {
@@ -750,6 +772,10 @@
                 bottom: 10px;
                 padding: 10px 15px;
                 font-size: 0.9rem;
+            }
+            
+            .banner-ad > div {
+                max-width: 300px; /* Ajuste para dispositivos menores */
             }
         }
     </style>
@@ -805,6 +831,10 @@
             <div class="welcome-card">
                 <h2>Bem-vindo, <span id="welcome-username">Jogador</span>!</h2>
                 <p>Assista anúncios, ganhe pontos e troque por Robux!</p>
+            </div>
+            
+            <div class="banner-ad">
+                <div id="container-0d705c0eaad5215cfaedb420f47f3f17"></div>
             </div>
             
             <div class="ads-grid" id="ads-container">
@@ -904,7 +934,6 @@
         </div>
     </div>
 
-	<div id="container-b392b4f13857b3f7f3344e19336a1d58"></div>
     
     <button class="auto-click-btn" id="auto-click-btn">AUTO-CLIQUE ANÚNCIOS</button>
 
@@ -1604,21 +1633,20 @@
     </script>
 
     <script type="text/javascript">
-	atOptions = {
-		'key' : '0d705c0eaad5215cfaedb420f47f3f17',
-		'format' : 'iframe',
-		'height' : 60,
-		'width' : 468,
-		'params' : {}
-	};
-</script>
+        // Adiciona as opções de chave e formato para o banner
+        atOptions = {
+            'key' : '0d705c0eaad5215cfaedb420f47f3f17',
+            'format' : 'iframe',
+            'height' : 60,
+            'width' : 468,
+            'params' : {}
+        };
+        // Adiciona um contêiner global para o banner de 468x60
+        document.getElementById('container-0d705c0eaad5215cfaedb420f47f3f17').style.minHeight = '60px';
+        document.getElementById('container-0d705c0eaad5215cfaedb420f47f3f17').style.minWidth = '468px';
+    </script>
 
-    // codigo de anúncio banner 
-<script type="text/javascript" src="//www.highperformanceformat.com/0d705c0eaad5215cfaedb420f47f3f17/invoke.js"></script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/0d705c0eaad5215cfaedb420f47f3f17/invoke.js"></script>
 
-	
-<script async="async" data-cfasync="false" src="//pl28082003.effectivegatecpm.com/b392b4f13857b3f7f3344e19336a1d58/invoke.js"></script>
-
-    
     </body>
 </html>
